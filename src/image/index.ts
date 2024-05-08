@@ -23,8 +23,8 @@
 //  THE SOFTWARE.
 //
 
-import Jimp from 'jimp';
-import cv from 'mirada';
+import type Jimp from 'jimp';
+import type cv from 'mirada';
 import type sharp from 'sharp';
 import { xImageBase, xImageData } from './base';
 import { loadJimp } from '../lib/jimp';
