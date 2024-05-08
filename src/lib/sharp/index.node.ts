@@ -28,9 +28,10 @@ import { xImageBase, xImageData } from '../../image/base';
 
 class ImageBase extends xImageBase<sharp.Sharp> {
 
+  //data: sharp.Sharp;
+
   constructor(data: xImageData | sharp.Sharp) {
     super(data);
-    throw new Error('Method not implemented.');
   }
 
   toImageData(): xImageData {

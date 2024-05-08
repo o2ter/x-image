@@ -28,15 +28,21 @@ import { xImageBase, xImageData } from '../../image/base';
 
 class ImageBase extends xImageBase<Jimp> {
 
+  data: Jimp;
+
   constructor(data: xImageData | Jimp) {
     super(data);
-    throw new Error('Method not implemented.');
+    if (data instanceof Jimp) {
+      this.data = data;
+    } else {
+      this.data = new Jimp()
+    }
   }
 
   toImageData(): xImageData {
     throw new Error('Method not implemented.');
   }
-  
+
 }
 
 export const loadJimp = () => ({

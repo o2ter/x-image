@@ -28,9 +28,10 @@ import { xImageBase, xImageData } from '../../image/base';
 
 class ImageBase extends xImageBase<cv.File> {
 
+  //data: cv.File;
+
   constructor(data: xImageData | cv.File) {
     super(data);
-    throw new Error('Method not implemented.');
   }
 
   toImageData(): xImageData {
