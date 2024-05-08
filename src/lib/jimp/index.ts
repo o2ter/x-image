@@ -24,12 +24,22 @@
 //
 
 import jimp from 'jimp';
-import { registeredModules, xImageModule } from '../../image/module';
+import { xImageBase, xImageData } from '../../image/base';
 
-const module: xImageModule = {
+class ImageBase extends xImageBase {
 
+  constructor(data: xImageData) {
+    super(data);
+    throw new Error('Method not implemented.');
+  }
+
+  toImageData(): xImageData {
+    throw new Error('Method not implemented.');
+  }
+  
 }
 
-export const loadJimp = () => {
-  registeredModules.push(module);
-}
+export const loadJimp = () => ({
+  ImageBase,
+});
+

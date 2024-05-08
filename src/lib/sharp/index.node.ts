@@ -24,12 +24,23 @@
 //
 
 import sharp from 'sharp';
-import { registeredModules, xImageModule } from '../../image/module';
+import { xImageBase, xImageData } from '../../image/base';
 
-const module: xImageModule = {
+class ImageBase extends xImageBase {
+
+  constructor(data: xImageData) {
+    super(data);
+    throw new Error('Method not implemented.');
+  }
+
+  toImageData(): xImageData {
+    throw new Error('Method not implemented.');
+  }
 
 }
 
-export const loadSharp = () => {
-  registeredModules.push(module);
-}
+const _loadSharp = () => ({
+  ImageBase,
+});
+
+export const loadSharp: () => ReturnType<typeof _loadSharp> | undefined = _loadSharp;

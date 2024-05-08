@@ -23,8 +23,24 @@
 //  THE SOFTWARE.
 //
 
-export interface xImageBase {
-
+export enum xImageChannel {
+  Gray,
+  RGB,
+  RGBA,
 }
 
+export interface xImageData {
+  data: ArrayBufferView;
+  width: number;
+  height: number;
+  channel: xImageChannel;
+  premultiplied: boolean;
+}
 
+export abstract class xImageBase {
+
+  constructor(data: xImageData) { }
+
+  abstract toImageData(): xImageData;
+
+}

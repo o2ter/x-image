@@ -23,4 +23,6 @@
 //  THE SOFTWARE.
 //
 
-export const loadSharp = () => { }
+import type { loadSharp as _loadSharp } from './index.node';
+
+export const loadSharp: typeof _loadSharp = () => undefined;
