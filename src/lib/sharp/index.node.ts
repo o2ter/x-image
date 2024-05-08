@@ -24,14 +24,28 @@
 //
 
 import sharp from 'sharp';
-import { xImageBase, xImageData } from '../../image/base';
+import { Duplex } from 'stream';
+import { binaryToBuffer } from '@o2ter/utils-js';
+import { xImageBase, channelsMap, xImageData } from '../../image/base';
 
 class ImageBase extends xImageBase<sharp.Sharp> {
 
-  //data: sharp.Sharp;
+  data: sharp.Sharp;
 
   constructor(data: xImageData | sharp.Sharp) {
     super(data);
+    if (data instanceof Duplex) {
+      this.data = data;
+    } else {
+      this.data = sharp(binaryToBuffer(data.data), {
+        raw: {
+          width: data.width,
+          height: data.height,
+          premultiplied: data.premultiplied,
+          channels: channelsMap[data.channel],
+        },
+      });
+    }
   }
 
   toImageData(): xImageData {

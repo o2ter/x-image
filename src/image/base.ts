@@ -29,6 +29,12 @@ export enum xImageChannel {
   RGBA,
 }
 
+export const channelsMap = {
+  [xImageChannel.Gray]: 1,
+  [xImageChannel.RGB]: 3,
+  [xImageChannel.RGBA]: 4,
+} as const;
+
 export interface xImageData {
   data: ArrayBufferView;
   width: number;
