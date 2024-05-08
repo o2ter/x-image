@@ -37,9 +37,9 @@ export interface xImageData {
   premultiplied: boolean;
 }
 
-export abstract class xImageBase {
+export abstract class xImageBase<Base> {
 
-  constructor(data: xImageData) { }
+  constructor(data: xImageData | Base) { }
 
   abstract toImageData(): xImageData;
 

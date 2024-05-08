@@ -23,13 +23,38 @@
 //  THE SOFTWARE.
 //
 
+import Jimp from 'jimp';
+import cv from 'mirada';
+import type sharp from 'sharp';
 import { xImageBase } from './base';
+import { loadJimp } from '../lib/jimp';
+import { loadMirada } from '../lib/mirada';
+import { loadSharp } from '../lib/sharp';
 
 export class xImage {
 
-  private _base: xImageBase
+  private _base: xImageBase<any>
 
-  private constructor(base: xImageBase) {
+  private constructor(base: xImageBase<any>) {
     this._base = base;
+  }
+
+  fromJimp(image: Jimp) {
+    const { ImageBase } = loadJimp();
+    const base = new ImageBase(image);
+    return new xImage(base);
+  }
+
+  async fromOpenCV(image: cv.File) {
+    const { ImageBase } = await loadMirada();
+    const base = new ImageBase(image);
+    return new xImage(base);
+  }
+
+  fromSharp(image: sharp.Sharp) {
+    const { ImageBase } = loadSharp() ?? {};
+    if (!ImageBase) throw Error('Sharp is not supported');
+    const base = new ImageBase(image);
+    return new xImage(base);
   }
 }

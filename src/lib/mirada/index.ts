@@ -26,9 +26,9 @@
 import cv from 'mirada';
 import { xImageBase, xImageData } from '../../image/base';
 
-class ImageBase extends xImageBase {
+class ImageBase extends xImageBase<cv.File> {
 
-  constructor(data: xImageData) {
+  constructor(data: xImageData | cv.File) {
     super(data);
     throw new Error('Method not implemented.');
   }
@@ -39,8 +39,15 @@ class ImageBase extends xImageBase {
 
 }
 
-export const loadMirada = async () => {
+let loaded = false;
+const _loadMirada = async () => {
+  if (loaded) return;
+  loaded = true;
   await cv.loadOpencv();
+}
+
+export const loadMirada = async () => {
+  await _loadMirada();
   return {
     ImageBase,
   };

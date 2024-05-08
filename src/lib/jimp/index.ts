@@ -23,12 +23,12 @@
 //  THE SOFTWARE.
 //
 
-import jimp from 'jimp';
+import Jimp from 'jimp';
 import { xImageBase, xImageData } from '../../image/base';
 
-class ImageBase extends xImageBase {
+class ImageBase extends xImageBase<Jimp> {
 
-  constructor(data: xImageData) {
+  constructor(data: xImageData | Jimp) {
     super(data);
     throw new Error('Method not implemented.');
   }
