@@ -23,15 +23,20 @@
 //  THE SOFTWARE.
 //
 
-import cv from 'mirada';
+import { File, loadOpencv } from 'mirada';
 import { xImageBase, xImageData } from '../../image/base';
 
-class ImageBase extends xImageBase<cv.File> {
+class ImageBase extends xImageBase<File> {
 
-  //data: cv.File;
+  data: File;
 
-  constructor(data: xImageData | cv.File) {
+  constructor(data: xImageData | File) {
     super(data);
+    if (data instanceof File) {
+      this.data = data;
+    } else {
+      this.data = File.fromData(data);
+    }
   }
 
   toImageData(): xImageData {
@@ -44,7 +49,7 @@ let loaded = false;
 const _loadMirada = async () => {
   if (loaded) return;
   loaded = true;
-  await cv.loadOpencv();
+  await loadOpencv();
 }
 
 export const loadMirada = async () => {
