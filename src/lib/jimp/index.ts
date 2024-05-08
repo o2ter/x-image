@@ -24,7 +24,7 @@
 //
 
 import Jimp from 'jimp';
-import { xImageBase, xImageData } from '../../image/base';
+import { xImageBase, xImageChannel, xImageData } from '../../image/base';
 
 class ImageBase extends xImageBase<Jimp> {
 
@@ -40,7 +40,11 @@ class ImageBase extends xImageBase<Jimp> {
   }
 
   toImageData(): xImageData {
-    throw new Error('Method not implemented.');
+    return {
+      ...this.data.bitmap,
+      channel: this.data.hasAlpha() ? xImageChannel.RGBA : xImageChannel.RGB,
+      premultiplied: false,
+    };
   }
 
 }
