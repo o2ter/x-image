@@ -30,8 +30,8 @@ import { loadSharp } from './lib/sharp';
 import { xImage as _Image } from './image';
 
 const modules = [
-  loadJimp,
   loadSharp,
+  loadJimp,
   loadMirada,
 ] as const;
 
@@ -39,7 +39,5 @@ type Modules = Awaited<ReturnType<typeof modules[number]>> & {};
 type Source = ConstructorParameters<Modules['ImageBase']>[0];
 
 export const xImage = (data: Source) => {
-
-
 
 };
