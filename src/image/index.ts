@@ -23,17 +23,19 @@
 //  THE SOFTWARE.
 //
 
-import { ImageBase } from './base';
+import { Awaitable } from '@o2ter/utils-js';
+import { ImageBase, ImageData } from './base';
 
 export class xImage {
 
-  private _base: ImageBase<any>
+  private _base: Awaitable<ImageBase<any> | ImageData>
 
-  private constructor(base: ImageBase<any>) {
+  constructor(base: Awaitable<ImageBase<any> | ImageData>) {
     this._base = base;
   }
 
-  raw() {
-    return this._base.toImageData();
+  async raw() {
+    const base = await this._base;
+    return base instanceof ImageBase ? base.toImageData() : base;
   }
 }

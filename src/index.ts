@@ -28,6 +28,7 @@ import { loadJimp } from './lib/jimp';
 import { loadMirada } from './lib/mirada';
 import { loadSharp } from './lib/sharp';
 import { xImage as _Image } from './image';
+import { isImageData } from './image/base';
 
 const modules = [
   loadSharp,
@@ -38,6 +39,13 @@ const modules = [
 type Modules = Awaited<ReturnType<typeof modules[number]>> & {};
 type Source = ConstructorParameters<Modules['ImageBase']>[0];
 
-export const xImage = (data: Source) => {
-
-};
+export const xImage = (data: Source) => new _Image((async () => {
+  for (const module of modules) {
+    const { instanceOf, ImageBase } = await module() ?? {};
+    if (!instanceOf || !ImageBase) continue;
+    if (!instanceOf(data)) continue;
+    return new ImageBase(data as any);
+  }
+  if (!isImageData(data)) throw Error('Unknown source format');
+  return data;
+})());

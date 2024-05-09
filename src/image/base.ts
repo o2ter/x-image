@@ -23,25 +23,33 @@
 //  THE SOFTWARE.
 //
 
-export enum xImageChannel {
+import _ from 'lodash';
+
+export enum Channel {
   Gray,
   RGB,
   RGBA,
 }
 
 export const channelsMap = {
-  [xImageChannel.Gray]: 1,
-  [xImageChannel.RGB]: 3,
-  [xImageChannel.RGBA]: 4,
+  [Channel.Gray]: 1,
+  [Channel.RGB]: 3,
+  [Channel.RGBA]: 4,
 } as const;
 
 export interface ImageData {
   buffer: ArrayBufferView;
   width: number;
   height: number;
-  channel: xImageChannel;
+  channel: Channel;
   premultiplied: boolean;
 }
+
+export const isImageData = (x: any): x is ImageData => ArrayBuffer.isView(x.buffer)
+  && _.isSafeInteger(x.width)
+  && _.isSafeInteger(x.height)
+  && _.includes(_.values(Channel), x.channel)
+  && _.isBoolean(x.premultiplied)
 
 export abstract class ImageBase<Native> {
 
