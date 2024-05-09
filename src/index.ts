@@ -42,10 +42,10 @@ type Source = ConstructorParameters<Modules['ImageBase']>[0];
 export const image = (data: Source) => new Image((async () => {
   for (const module of modules) {
     const { instanceOf, ImageBase } = await module() ?? {};
-    if (!instanceOf || !ImageBase) continue;
-    if (!instanceOf(data)) continue;
+    if (!instanceOf || !instanceOf(data) || !ImageBase) continue;
     return new ImageBase(data as any);
   }
+  console.log(data)
   if (!isImageData(data)) throw Error('Unknown source format');
   return data;
 })());

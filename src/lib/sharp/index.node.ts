@@ -23,12 +23,13 @@
 //  THE SOFTWARE.
 //
 
+import _ from 'lodash';
 import sharp from 'sharp';
 import { Duplex } from 'stream';
 import { binaryToBuffer } from '@o2ter/utils-js';
 import { ImageBase, channelsMap, ImageData, Channels } from '../../image/base';
 
-const instanceOf = (x: any): x is sharp.Sharp => x instanceof Duplex;
+const instanceOf = (x: any): x is sharp.Sharp => _.isFunction(x.toBuffer) && x instanceof Duplex;
 
 class _ImageBase extends ImageBase<sharp.Sharp> {
 
