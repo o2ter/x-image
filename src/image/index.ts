@@ -30,11 +30,13 @@ import { loadJimp } from '../lib/jimp';
 import { loadMirada } from '../lib/mirada';
 import { loadSharp } from '../lib/sharp';
 
+type _Base = Awaitable<ImageBase<any> | ImageData>;
+
 export class Image {
 
-  private _base: Awaitable<ImageBase<any> | ImageData>
+  private _base: _Base
 
-  constructor(base: Awaitable<ImageBase<any> | ImageData> | (() => Awaitable<ImageBase<any> | ImageData>)) {
+  constructor(base: _Base | (() => _Base)) {
     this._base = _.isFunction(base) ? base() : base;
   }
 
