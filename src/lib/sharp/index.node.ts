@@ -79,6 +79,11 @@ class _ImageBase extends ImageBase<sharp.Sharp> {
       premultiplied,
     };
   }
+
+  clone() {
+    return new _ImageBase(this._native.clone());
+  }
+
 }
 
 const _loadSharp = () => ({

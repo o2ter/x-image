@@ -23,7 +23,7 @@
 //  THE SOFTWARE.
 //
 
-import { Awaitable } from '@o2ter/utils-js';
+import { Awaitable, binaryToBuffer } from '@o2ter/utils-js';
 import { ImageBase, ImageData } from './base';
 import { loadJimp } from '../lib/jimp';
 import { loadMirada } from '../lib/mirada';
@@ -50,6 +50,13 @@ export class Image {
   async raw() {
     const base = await this._base;
     return base instanceof ImageBase ? base.raw() : base;
+  }
+
+  clone() {
+    return new Image((async () => {
+      const base = await this._base;
+      return base instanceof ImageBase ? base.clone() : { ...base, buffer: binaryToBuffer(base.buffer) };
+    })());
   }
 
   toJimp() {

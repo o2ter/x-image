@@ -61,6 +61,10 @@ class _ImageBase extends ImageBase<Jimp> {
     };
   }
 
+  clone() {
+    return new _ImageBase(this._native.clone());
+  }
+
 }
 
 export const loadJimp = () => ({

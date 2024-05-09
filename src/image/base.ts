@@ -68,6 +68,8 @@ export abstract class ImageBase<Native> {
 
   abstract raw(): Awaitable<ImageData>;
 
+  abstract clone(): ImageBase<Native>;
+
   destory() {
     if (this._destroyed) throw Error('Cannot destroy a destroyed image');
     this._destroyed = true;
