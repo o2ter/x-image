@@ -24,25 +24,32 @@
 //
 
 import cv from 'mirada';
-import { xImageBase, xImageData } from '../../image/base';
+import { ImageBase, ImageData } from '../../image/base';
 
-class ImageBase extends xImageBase<cv.File> {
+const instanceOf = (x: any): x is cv.File => x instanceof cv.File;
 
-  data: cv.File;
+class _ImageBase extends ImageBase<cv.File> {
 
-  constructor(data: xImageData | cv.File) {
-    super(data);
-    if (data instanceof cv.File) {
-      this.data = data;
+  constructor(data: ImageData | cv.File) {
+    if (instanceOf(data)) {
+      super(data);
     } else {
-      this.data = cv.File.fromData(data);
+      super(cv.File.fromData({
+        data: data.buffer,
+        width: data.width,
+        height: data.height,
+      }));
     }
   }
 
-  toImageData(): xImageData {
+  toImageData(): ImageData {
     throw new Error('Method not implemented.');
   }
 
+  destory() {
+    super.destory();
+    this._native.delete();
+  }
 }
 
 let loaded = false;
@@ -55,6 +62,7 @@ const _loadMirada = async () => {
 export const loadMirada = async () => {
   await _loadMirada();
   return {
-    ImageBase,
+    instanceOf,
+    ImageBase: _ImageBase,
   };
 }

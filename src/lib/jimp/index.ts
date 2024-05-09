@@ -24,25 +24,31 @@
 //
 
 import Jimp from 'jimp';
-import { xImageBase, xImageChannel, xImageData } from '../../image/base';
+import { ImageBase, xImageChannel, ImageData } from '../../image/base';
+import { binaryToBuffer } from '@o2ter/utils-js';
 
-class ImageBase extends xImageBase<Jimp> {
+const instanceOf = (x: any): x is Jimp => x instanceof Jimp;
 
-  data: Jimp;
+class _ImageBase extends ImageBase<Jimp> {
 
-  constructor(data: xImageData | Jimp) {
-    super(data);
-    if (data instanceof Jimp) {
-      this.data = data;
+  constructor(data: ImageData | Jimp) {
+    if (instanceOf(data)) {
+      super(data);
     } else {
-      this.data = new Jimp()
+      super(new Jimp({
+        data: binaryToBuffer(data.buffer),
+        width: data.width,
+        height: data.height,
+      }));
     }
   }
 
-  toImageData(): xImageData {
+  toImageData(): ImageData {
     return {
-      ...this.data.bitmap,
-      channel: this.data.hasAlpha() ? xImageChannel.RGBA : xImageChannel.RGB,
+      buffer: this._native.bitmap.data,
+      width: this._native.bitmap.width,
+      height: this._native.bitmap.height,
+      channel: this._native.hasAlpha() ? xImageChannel.RGBA : xImageChannel.RGB,
       premultiplied: false,
     };
   }
@@ -50,6 +56,7 @@ class ImageBase extends xImageBase<Jimp> {
 }
 
 export const loadJimp = () => ({
-  ImageBase,
+  instanceOf,
+  ImageBase: _ImageBase,
 });
 

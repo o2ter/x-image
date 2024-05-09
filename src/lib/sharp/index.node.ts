@@ -26,18 +26,17 @@
 import sharp from 'sharp';
 import { Duplex } from 'stream';
 import { binaryToBuffer } from '@o2ter/utils-js';
-import { xImageBase, channelsMap, xImageData } from '../../image/base';
+import { ImageBase, channelsMap, ImageData } from '../../image/base';
 
-class ImageBase extends xImageBase<sharp.Sharp> {
+const instanceOf = (x: any): x is sharp.Sharp => x instanceof Duplex;
 
-  data: sharp.Sharp;
+class _ImageBase extends ImageBase<sharp.Sharp> {
 
-  constructor(data: xImageData | sharp.Sharp) {
-    super(data);
-    if (data instanceof Duplex) {
-      this.data = data;
+  constructor(data: ImageData | sharp.Sharp) {
+    if (instanceOf(data)) {
+      super(data);
     } else {
-      this.data = sharp(binaryToBuffer(data.data), {
+      const image = sharp(binaryToBuffer(data.buffer), {
         raw: {
           width: data.width,
           height: data.height,
@@ -45,17 +44,18 @@ class ImageBase extends xImageBase<sharp.Sharp> {
           channels: channelsMap[data.channel],
         },
       });
+      super(image);
     }
   }
 
-  toImageData(): xImageData {
+  toImageData(): ImageData {
     throw new Error('Method not implemented.');
   }
-
 }
 
 const _loadSharp = () => ({
-  ImageBase,
+  instanceOf,
+  ImageBase: _ImageBase,
 });
 
 export const loadSharp: () => ReturnType<typeof _loadSharp> | undefined = _loadSharp;

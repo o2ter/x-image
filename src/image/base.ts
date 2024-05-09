@@ -35,18 +35,27 @@ export const channelsMap = {
   [xImageChannel.RGBA]: 4,
 } as const;
 
-export interface xImageData {
-  data: ArrayBufferView;
+export interface ImageData {
+  buffer: ArrayBufferView;
   width: number;
   height: number;
   channel: xImageChannel;
   premultiplied: boolean;
 }
 
-export abstract class xImageBase<Base> {
+export abstract class ImageBase<Native> {
 
-  constructor(data: xImageData | Base) { }
+  _native: Native;
+  _destroyed: boolean = false;
 
-  abstract toImageData(): xImageData;
+  constructor(native: Native) {
+    this._native = native;
+  }
 
+  abstract toImageData(): ImageData;
+
+  destory() {
+    if (this._destroyed) throw Error('Cannot destroy a destroyed image');
+    this._destroyed = true;
+  }
 }

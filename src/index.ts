@@ -1,5 +1,5 @@
 //
-//  index.js
+//  index.ts
 //
 //  The MIT License
 //  Copyright (c) 2021 - 2024 O2ter Limited. All rights reserved.
@@ -27,14 +27,19 @@ import _ from 'lodash';
 import { loadJimp } from './lib/jimp';
 import { loadMirada } from './lib/mirada';
 import { loadSharp } from './lib/sharp';
+import { xImage as _Image } from './image';
 
-export { xImage } from './image';
+const modules = [
+  loadJimp,
+  loadSharp,
+  loadMirada,
+] as const;
 
-(async () => {
-  const modules = [
-    loadJimp,
-    loadSharp,
-    loadMirada,
-  ];
-  await Promise.all(_.map(modules, load => load()));
-})();
+type Modules = Awaited<ReturnType<typeof modules[number]>> & {};
+type Source = ConstructorParameters<Modules['ImageBase']>[0];
+
+export const xImage = (data: Source) => {
+
+
+
+};
