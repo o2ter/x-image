@@ -26,7 +26,7 @@
 import { Awaitable } from '@o2ter/utils-js';
 import { ImageBase, ImageData } from './base';
 
-export class xImage {
+export class Image {
 
   private _base: Awaitable<ImageBase<any> | ImageData>
 

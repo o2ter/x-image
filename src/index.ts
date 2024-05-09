@@ -27,7 +27,7 @@ import _ from 'lodash';
 import { loadJimp } from './lib/jimp';
 import { loadMirada } from './lib/mirada';
 import { loadSharp } from './lib/sharp';
-import { xImage as _Image } from './image';
+import { Image } from './image';
 import { isImageData } from './image/base';
 
 const modules = [
@@ -39,7 +39,7 @@ const modules = [
 type Modules = Awaited<ReturnType<typeof modules[number]>> & {};
 type Source = ConstructorParameters<Modules['ImageBase']>[0];
 
-export const xImage = (data: Source) => new _Image((async () => {
+export const image = (data: Source) => new Image((async () => {
   for (const module of modules) {
     const { instanceOf, ImageBase } = await module() ?? {};
     if (!instanceOf || !ImageBase) continue;
