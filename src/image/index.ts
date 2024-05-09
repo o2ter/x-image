@@ -23,6 +23,7 @@
 //  THE SOFTWARE.
 //
 
+import _ from 'lodash';
 import { Awaitable, binaryToBuffer } from '@o2ter/utils-js';
 import { ImageBase, ImageData } from './base';
 import { loadJimp } from '../lib/jimp';
@@ -33,8 +34,8 @@ export class Image {
 
   private _base: Awaitable<ImageBase<any> | ImageData>
 
-  constructor(base: Awaitable<ImageBase<any> | ImageData>) {
-    this._base = base;
+  constructor(base: Awaitable<ImageBase<any> | ImageData> | (() => Awaitable<ImageBase<any> | ImageData>)) {
+    this._base = _.isFunction(base) ? base() : base;
   }
 
   async width() {
@@ -53,10 +54,10 @@ export class Image {
   }
 
   clone() {
-    return new Image((async () => {
+    return new Image(async () => {
       const base = await this._base;
       return base instanceof ImageBase ? base.clone() : { ...base, buffer: binaryToBuffer(base.buffer) };
-    })());
+    });
   }
 
   async destory() {
@@ -67,21 +68,21 @@ export class Image {
   toJimp() {
     const { instanceOf, ImageBase } = loadJimp();
     if (instanceOf(this._base)) return this;
-    return new Image((async () => new ImageBase(await this.raw()))());
+    return new Image(async () => new ImageBase(await this.raw()));
   }
 
   toMirada() {
-    return new Image((async () => {
+    return new Image(async () => {
       const { instanceOf, ImageBase } = await loadMirada();
       if (instanceOf(this._base)) return this._base;
       return new ImageBase(await this.raw());
-    })());
+    });
   }
 
   toSharp() {
     const { instanceOf, ImageBase } = loadSharp() ?? {};
     if (!instanceOf || !ImageBase) throw Error('Sharp is not supported');
     if (instanceOf(this._base)) return this;
-    return new Image((async () => new ImageBase(await this.raw()))());
+    return new Image(async () => new ImageBase(await this.raw()));
   }
 }

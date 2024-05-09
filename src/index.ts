@@ -39,7 +39,7 @@ const modules = [
 type Modules = Awaited<ReturnType<typeof modules[number]>> & {};
 type Source = ConstructorParameters<Modules['ImageBase']>[0];
 
-export const image = (data: Source) => new Image((async () => {
+export const image = (data: Source) => new Image(async () => {
   for (const module of modules) {
     const { instanceOf, ImageBase } = await module() ?? {};
     if (!instanceOf || !instanceOf(data) || !ImageBase) continue;
@@ -47,4 +47,4 @@ export const image = (data: Source) => new Image((async () => {
   }
   if (!isImageData(data)) throw Error('Unknown source format');
   return data;
-})());
+});
