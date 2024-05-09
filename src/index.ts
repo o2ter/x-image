@@ -45,7 +45,6 @@ export const image = (data: Source) => new Image((async () => {
     if (!instanceOf || !instanceOf(data) || !ImageBase) continue;
     return new ImageBase(data as any);
   }
-  console.log(data)
   if (!isImageData(data)) throw Error('Unknown source format');
   return data;
 })());
