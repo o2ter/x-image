@@ -53,20 +53,23 @@ export class Image {
   }
 
   toJimp() {
-    const { ImageBase } = loadJimp();
+    const { instanceOf, ImageBase } = loadJimp();
+    if (instanceOf(this._base)) return this;
     return new Image((async () => new ImageBase(await this.raw()))());
   }
 
   toMirada() {
     return new Image((async () => {
-      const { ImageBase } = await loadMirada();
+      const { instanceOf, ImageBase } = await loadMirada();
+      if (instanceOf(this._base)) return this._base;
       return new ImageBase(await this.raw());
     })());
   }
 
   toSharp() {
-    const { ImageBase } = loadSharp() ?? {};
-    if (!ImageBase) throw Error('Sharp is not supported');
+    const { instanceOf, ImageBase } = loadSharp() ?? {};
+    if (!instanceOf || !ImageBase) throw Error('Sharp is not supported');
+    if (instanceOf(this._base)) return this;
     return new Image((async () => new ImageBase(await this.raw()))());
   }
 }
