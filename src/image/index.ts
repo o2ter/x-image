@@ -59,6 +59,11 @@ export class Image {
     })());
   }
 
+  async destory() {
+    const base = await this._base;
+    if (base instanceof ImageBase) base.destory();
+  }
+
   toJimp() {
     const { instanceOf, ImageBase } = loadJimp();
     if (instanceOf(this._base)) return this;
