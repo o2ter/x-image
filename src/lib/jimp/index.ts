@@ -43,6 +43,14 @@ class _ImageBase extends ImageBase<Jimp> {
     }
   }
 
+  width() {
+    return this._native.bitmap.width;
+  }
+
+  height() {
+    return this._native.bitmap.height;
+  }
+
   raw() {
     return {
       buffer: this._native.bitmap.data,

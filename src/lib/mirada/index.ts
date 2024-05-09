@@ -42,6 +42,14 @@ class _ImageBase extends ImageBase<cv.File> {
     }
   }
 
+  width() {
+    return this._native.width;
+  }
+
+  height() {
+    return this._native.height;
+  }
+
   raw() {
     const { data, width, height } = this._native.asImageData();
     const channels = this._native.asMat().channels();

@@ -30,12 +30,14 @@ export enum Channels {
   Gray,
   RGB,
   RGBA,
+  CMYK
 }
 
 export const channelsMap = {
   [Channels.Gray]: 1,
   [Channels.RGB]: 3,
   [Channels.RGBA]: 4,
+  [Channels.CMYK]: 4,
 } as const;
 
 export interface ImageData {
@@ -60,6 +62,9 @@ export abstract class ImageBase<Native> {
   constructor(native: Native) {
     this._native = native;
   }
+
+  abstract width(): Awaitable<number>;
+  abstract height(): Awaitable<number>;
 
   abstract raw(): Awaitable<ImageData>;
 

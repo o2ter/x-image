@@ -34,6 +34,16 @@ export class Image {
     this._base = base;
   }
 
+  async width() {
+    const base = await this._base;
+    return base instanceof ImageBase ? base.width() : base.width;
+  }
+
+  async height() {
+    const base = await this._base;
+    return base instanceof ImageBase ? base.height() : base.height;
+  }
+
   async raw() {
     const base = await this._base;
     return base instanceof ImageBase ? base.raw() : base;

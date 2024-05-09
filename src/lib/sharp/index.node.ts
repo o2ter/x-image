@@ -49,6 +49,16 @@ class _ImageBase extends ImageBase<sharp.Sharp> {
     }
   }
 
+  async width() {
+    const { width } = await this._native.metadata();
+    return width ?? 0;
+  }
+
+  async height() {
+    const { height } = await this._native.metadata();
+    return height ?? 0;
+  }
+
   async raw(): Promise<ImageData> {
     const {
       data,
