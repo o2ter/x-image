@@ -25,6 +25,9 @@
 
 import { Awaitable } from '@o2ter/utils-js';
 import { ImageBase, ImageData } from './base';
+import { loadJimp } from '../lib/jimp';
+import { loadMirada } from '../lib/mirada';
+import { loadSharp } from '../lib/sharp';
 
 export class Image {
 
@@ -47,5 +50,23 @@ export class Image {
   async raw() {
     const base = await this._base;
     return base instanceof ImageBase ? base.raw() : base;
+  }
+
+  toJimp() {
+    const { ImageBase } = loadJimp();
+    return new Image((async () => new ImageBase(await this.raw()))());
+  }
+
+  toMirada() {
+    return new Image((async () => {
+      const { ImageBase } = await loadMirada();
+      return new ImageBase(await this.raw());
+    })());
+  }
+
+  toSharp() {
+    const { ImageBase } = loadSharp() ?? {};
+    if (!ImageBase) throw Error('Sharp is not supported');
+    return new Image((async () => new ImageBase(await this.raw()))());
   }
 }
