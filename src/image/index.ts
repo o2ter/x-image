@@ -36,6 +36,6 @@ export class Image {
 
   async raw() {
     const base = await this._base;
-    return base instanceof ImageBase ? base.toImageData() : base;
+    return base instanceof ImageBase ? base.raw() : base;
   }
 }

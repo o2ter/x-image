@@ -24,7 +24,7 @@
 //
 
 import cv from 'mirada';
-import { ImageBase, ImageData } from '../../image/base';
+import { Channels, ImageBase, ImageData } from '../../image/base';
 
 const instanceOf = (x: any): x is cv.File => x instanceof cv.File;
 
@@ -42,8 +42,16 @@ class _ImageBase extends ImageBase<cv.File> {
     }
   }
 
-  toImageData(): ImageData {
-    throw new Error('Method not implemented.');
+  raw() {
+    const { data, width, height } = this._native.asImageData();
+    const channels = this._native.asMat().channels();
+    return {
+      buffer: data,
+      width,
+      height,
+      channels: channels === 1 ? Channels.Gray : Channels.RGBA,
+      premultiplied: false,
+    };
   }
 
   destory() {

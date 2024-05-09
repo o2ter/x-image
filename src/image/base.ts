@@ -24,31 +24,32 @@
 //
 
 import _ from 'lodash';
+import { Awaitable } from '@o2ter/utils-js';
 
-export enum Channel {
+export enum Channels {
   Gray,
   RGB,
   RGBA,
 }
 
 export const channelsMap = {
-  [Channel.Gray]: 1,
-  [Channel.RGB]: 3,
-  [Channel.RGBA]: 4,
+  [Channels.Gray]: 1,
+  [Channels.RGB]: 3,
+  [Channels.RGBA]: 4,
 } as const;
 
 export interface ImageData {
   buffer: ArrayBufferView;
   width: number;
   height: number;
-  channel: Channel;
+  channels: Channels;
   premultiplied: boolean;
 }
 
 export const isImageData = (x: any): x is ImageData => ArrayBuffer.isView(x.buffer)
   && _.isSafeInteger(x.width)
   && _.isSafeInteger(x.height)
-  && _.includes(_.values(Channel), x.channel)
+  && _.includes(_.values(Channels), x.channel)
   && _.isBoolean(x.premultiplied)
 
 export abstract class ImageBase<Native> {
@@ -60,7 +61,7 @@ export abstract class ImageBase<Native> {
     this._native = native;
   }
 
-  abstract toImageData(): ImageData;
+  abstract raw(): Awaitable<ImageData>;
 
   destory() {
     if (this._destroyed) throw Error('Cannot destroy a destroyed image');

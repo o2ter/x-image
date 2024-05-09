@@ -26,7 +26,7 @@
 import sharp from 'sharp';
 import { Duplex } from 'stream';
 import { binaryToBuffer } from '@o2ter/utils-js';
-import { ImageBase, channelsMap, ImageData } from '../../image/base';
+import { ImageBase, channelsMap, ImageData, Channels } from '../../image/base';
 
 const instanceOf = (x: any): x is sharp.Sharp => x instanceof Duplex;
 
@@ -41,15 +41,32 @@ class _ImageBase extends ImageBase<sharp.Sharp> {
           width: data.width,
           height: data.height,
           premultiplied: data.premultiplied,
-          channels: channelsMap[data.channel],
+          channels: channelsMap[data.channels],
         },
       });
       super(image);
     }
   }
 
-  toImageData(): ImageData {
-    throw new Error('Method not implemented.');
+  async raw(): Promise<ImageData> {
+    const {
+      data,
+      info: {
+        width,
+        height,
+        channels,
+        premultiplied,
+      }
+    } = await this._native
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+    return {
+      buffer: data,
+      width,
+      height,
+      channels: channels === 1 ? Channels.Gray : Channels.RGBA,
+      premultiplied,
+    };
   }
 }
 
