@@ -24,7 +24,7 @@
 //
 
 import Jimp from 'jimp';
-import { ImageBase, Channels, ImageData } from '../../image/base';
+import { ImageBase, BitmapFormat, ImageData } from '../../image/base';
 import { binaryToBuffer } from '@o2ter/utils-js';
 
 const instanceOf = (x: any): x is Jimp => x instanceof Jimp;
@@ -56,7 +56,7 @@ class _ImageBase extends ImageBase<Jimp> {
       buffer: this._native.bitmap.data,
       width: this._native.bitmap.width,
       height: this._native.bitmap.height,
-      channels: this._native.hasAlpha() ? Channels.RGBA : Channels.RGB,
+      channels: this._native.hasAlpha() ? BitmapFormat.RGBA32 : BitmapFormat.RGB24,
       premultiplied: false,
     };
   }

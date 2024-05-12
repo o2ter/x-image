@@ -24,7 +24,7 @@
 //
 
 import cv from 'mirada';
-import { Channels, ImageBase, ImageData } from '../../image/base';
+import { BitmapFormat, ImageBase, ImageData } from '../../image/base';
 
 const instanceOf = (x: any): x is cv.File => x instanceof cv.File;
 
@@ -57,7 +57,7 @@ class _ImageBase extends ImageBase<cv.File> {
       buffer: data,
       width,
       height,
-      channels: channels === 1 ? Channels.Gray : Channels.RGBA,
+      channels: channels === 1 ? BitmapFormat.Gray8 : BitmapFormat.RGBA32,
       premultiplied: false,
     };
   }

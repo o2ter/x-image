@@ -26,32 +26,32 @@
 import _ from 'lodash';
 import { Awaitable } from '@o2ter/utils-js';
 
-export enum Channels {
-  Gray,
-  RGB,
-  RGBA,
-  CMYK
-}
+export enum BitmapFormat {
+  Gray8,
+  RGB24,
+  RGBA32,
+  CMYK32,
+};
 
 export const channelsMap = {
-  [Channels.Gray]: 1,
-  [Channels.RGB]: 3,
-  [Channels.RGBA]: 4,
-  [Channels.CMYK]: 4,
+  [BitmapFormat.Gray8]: 1,
+  [BitmapFormat.RGB24]: 3,
+  [BitmapFormat.RGBA32]: 4,
+  [BitmapFormat.CMYK32]: 4,
 } as const;
 
 export interface ImageData {
   buffer: ArrayBufferView;
   width: number;
   height: number;
-  channels: Channels;
+  channels: BitmapFormat;
   premultiplied: boolean;
 }
 
 export const isImageData = (x: any): x is ImageData => ArrayBuffer.isView(x.buffer)
   && _.isSafeInteger(x.width)
   && _.isSafeInteger(x.height)
-  && _.includes(_.values(Channels), x.channel)
+  && _.includes(_.values(BitmapFormat), x.channel)
   && _.isBoolean(x.premultiplied)
 
 export abstract class ImageBase<Native> {
