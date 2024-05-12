@@ -2,12 +2,12 @@ const path = require('path');
 const { image } = require('../dist/index.node');
 const sharp = require('sharp');
 
-const test = image(sharp(path.resolve(__dirname, 'test.png')))
+(async () => {
 
-console.log(test)
+  const test = image(sharp(path.resolve(__dirname, 'test.png')))
 
-console.log(test.toJimp())
+  console.log(test)
 
-console.log(test.toMirada())
+  console.log(await test.raw())
 
-console.log(test.toSharp())
+})();
