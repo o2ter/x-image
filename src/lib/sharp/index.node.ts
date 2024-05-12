@@ -49,33 +49,47 @@ class _ImageBase extends ImageBase<sharp.Sharp> {
     }
   }
 
+  async metadata() {
+    return this._native.metadata();
+  }
+
   async width() {
-    const { width } = await this._native.metadata();
+    const { width } = await this.metadata();
     return width ?? 0;
   }
 
   async height() {
-    const { height } = await this._native.metadata();
+    const { height } = await this.metadata();
     return height ?? 0;
   }
 
   async raw(): Promise<ImageData> {
+    const { data, info } = await this._native.raw().toBuffer({ resolveWithObject: true });
+    if (!('depth' in info) || !_.isString(info.depth)) throw Error('Unknown format');
     const {
-      data,
-      info: {
-        width,
-        height,
-        channels,
-        premultiplied,
-      }
-    } = await this._native
-      .raw()
-      .toBuffer({ resolveWithObject: true });
+      width,
+      height,
+      channels,
+      premultiplied,
+    } = info;
+    let format;
+    switch (true) {
+      case info.depth === 'uchar' && channels === 1:
+        format = BitmapFormat.Gray8;
+        break;
+      case info.depth === 'uchar' && channels === 3:
+        format = BitmapFormat.RGB24;
+        break;
+      case info.depth === 'uchar' && channels === 4:
+        format = BitmapFormat.CMYK32;
+        break;
+      default: throw Error('Unknown format');
+    }
     return {
       buffer: data,
       width,
       height,
-      format: channels === 1 ? BitmapFormat.Gray8 : BitmapFormat.RGBA32,
+      format,
       premultiplied,
     };
   }
