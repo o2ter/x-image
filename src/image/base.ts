@@ -37,7 +37,7 @@ export interface ImageData {
   buffer: ArrayBufferView;
   width: number;
   height: number;
-  space?: string;
+  space?: string | Buffer;
   format: BitmapFormat;
   premultiplied: boolean;
 }

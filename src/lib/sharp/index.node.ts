@@ -71,7 +71,7 @@ class _ImageBase extends ImageBase<sharp.Sharp> {
   }
 
   async raw(): Promise<ImageData> {
-    const { space, hasAlpha } = await this.metadata();
+    const { space, hasAlpha, icc } = await this.metadata();
     const { data, info } = await this._native.raw({ depth: 'uchar' }).toBuffer({ resolveWithObject: true });
     const {
       width,
@@ -99,7 +99,7 @@ class _ImageBase extends ImageBase<sharp.Sharp> {
       buffer: data,
       width,
       height,
-      space,
+      space: icc ?? space,
       format,
       premultiplied,
     };
