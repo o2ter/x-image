@@ -10,4 +10,10 @@ const sharp = require('sharp');
 
   console.log(await test.raw())
 
+  const test2 = image(sharp(path.resolve(__dirname, 'test2.png')))
+
+  console.log(test2)
+
+  console.log(await test2.raw())
+
 })();
