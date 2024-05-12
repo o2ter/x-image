@@ -36,7 +36,7 @@ const modules = [
   loadMirada,
 ] as const;
 
-type Modules = Awaited<ReturnType<typeof modules[number]>> & {};
+type Modules = NonNullable<Awaited<ReturnType<typeof modules[number]>>>;
 type Source = ConstructorParameters<Modules['ImageBase']>[0];
 
 export const image = (data: Source) => new Image(async () => {
