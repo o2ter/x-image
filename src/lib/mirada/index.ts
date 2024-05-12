@@ -52,12 +52,26 @@ class _ImageBase extends ImageBase<cv.File> {
 
   raw() {
     const { data, width, height } = this._native.asImageData();
-    const channels = this._native.asMat().channels();
+    const mat = this._native.asMat();
+    const type = mat.type();
+    let format;
+    switch (true) {
+      case type === cv.CV_8UC1:
+        format = BitmapFormat.Gray8;
+        break;
+      case type === cv.CV_8UC3:
+        format = BitmapFormat.RGB24;
+        break;
+      case type === cv.CV_8UC4:
+        format = BitmapFormat.RGBA32;
+        break;
+      default: throw Error('Unknown format');
+    }
     return {
       buffer: data,
       width,
       height,
-      format: channels === 1 ? BitmapFormat.Gray8 : BitmapFormat.RGBA32,
+      format,
       premultiplied: false,
     };
   }
