@@ -39,8 +39,7 @@ export interface ImageData {
   height: number;
   format: BitmapFormat;
   premultiplied: boolean;
-  space?: string;
-  icc?: Buffer;
+  space?: string | Buffer;
 }
 
 export const isImageData = (x: any): x is ImageData => ArrayBuffer.isView(x.buffer)

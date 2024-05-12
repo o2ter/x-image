@@ -101,8 +101,7 @@ class _ImageBase extends ImageBase<sharp.Sharp> {
       height,
       format,
       premultiplied,
-      space,
-      icc,
+      space: icc ?? space,
     };
   }
 
