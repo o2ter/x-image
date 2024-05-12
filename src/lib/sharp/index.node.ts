@@ -42,7 +42,7 @@ class _ImageBase extends ImageBase<sharp.Sharp> {
           width: data.width,
           height: data.height,
           premultiplied: data.premultiplied,
-          channels: channelsMap[data.channels],
+          channels: channelsMap[data.format],
         },
       });
       super(image);
@@ -75,7 +75,7 @@ class _ImageBase extends ImageBase<sharp.Sharp> {
       buffer: data,
       width,
       height,
-      channels: channels === 1 ? BitmapFormat.Gray8 : BitmapFormat.RGBA32,
+      format: channels === 1 ? BitmapFormat.Gray8 : BitmapFormat.RGBA32,
       premultiplied,
     };
   }

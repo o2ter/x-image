@@ -57,7 +57,7 @@ class _ImageBase extends ImageBase<cv.File> {
       buffer: data,
       width,
       height,
-      channels: channels === 1 ? BitmapFormat.Gray8 : BitmapFormat.RGBA32,
+      format: channels === 1 ? BitmapFormat.Gray8 : BitmapFormat.RGBA32,
       premultiplied: false,
     };
   }

@@ -56,7 +56,7 @@ class _ImageBase extends ImageBase<Jimp> {
       buffer: this._native.bitmap.data,
       width: this._native.bitmap.width,
       height: this._native.bitmap.height,
-      channels: this._native.hasAlpha() ? BitmapFormat.RGBA32 : BitmapFormat.RGB24,
+      format: this._native.hasAlpha() ? BitmapFormat.RGBA32 : BitmapFormat.RGB24,
       premultiplied: false,
     };
   }

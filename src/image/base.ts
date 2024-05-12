@@ -44,7 +44,7 @@ export interface ImageData {
   buffer: ArrayBufferView;
   width: number;
   height: number;
-  channels: BitmapFormat;
+  format: BitmapFormat;
   premultiplied: boolean;
 }
 
