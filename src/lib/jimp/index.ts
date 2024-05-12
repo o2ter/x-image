@@ -35,11 +35,12 @@ class _ImageBase extends ImageBase<Jimp> {
     if (instanceOf(data)) {
       super(data);
     } else {
-      super(new Jimp({
+      const image = new Jimp({
         data: binaryToBuffer(data.buffer),
         width: data.width,
         height: data.height,
-      }));
+      });
+      super(image);
     }
   }
 

@@ -34,11 +34,12 @@ class _ImageBase extends ImageBase<cv.File> {
     if (instanceOf(data)) {
       super(data);
     } else {
-      super(cv.File.fromData({
+      const image = cv.File.fromData({
         data: data.buffer,
         width: data.width,
         height: data.height,
-      }));
+      });
+      super(image);
     }
   }
 
