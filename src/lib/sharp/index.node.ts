@@ -71,8 +71,8 @@ class _ImageBase extends ImageBase<sharp.Sharp> {
   }
 
   async raw(): Promise<ImageData> {
-    const { data, info } = await this._native.raw().toBuffer({ resolveWithObject: true });
-    const { space, depth, hasAlpha } = await this.metadata();
+    const { space, hasAlpha } = await this.metadata();
+    const { data, info } = await this._native.raw({ depth: 'uchar' }).toBuffer({ resolveWithObject: true });
     const {
       width,
       height,
@@ -81,16 +81,16 @@ class _ImageBase extends ImageBase<sharp.Sharp> {
     } = info;
     let format;
     switch (true) {
-      case depth === 'uchar' && channels === 1 && !hasAlpha:
+      case channels === 1 && !hasAlpha:
         format = BitmapFormat.Gray8;
         break;
-      case depth === 'uchar' && channels === 3 && !hasAlpha:
+      case channels === 3 && !hasAlpha:
         format = BitmapFormat.RGB24;
         break;
-      case depth === 'uchar' && channels === 4 && hasAlpha:
+      case channels === 4 && hasAlpha:
         format = BitmapFormat.RGBA32;
         break;
-      case depth === 'uchar' && channels === 4 && !hasAlpha:
+      case channels === 4 && !hasAlpha:
         format = BitmapFormat.CMYK32;
         break;
       default: throw Error('Unknown format');
