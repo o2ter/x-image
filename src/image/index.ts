@@ -67,6 +67,12 @@ export class Image {
     if (base instanceof ImageBase) base.destory();
   }
 
+  private _anyImage() {
+    const { instanceOf, ImageBase } = loadSharp() ?? loadJimp();
+    if (instanceOf(this._base)) return this;
+    return new Image(async () => new ImageBase(await this.raw()));
+  }
+
   toJimp() {
     const { instanceOf, ImageBase } = loadJimp();
     if (instanceOf(this._base)) return this;
