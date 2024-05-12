@@ -81,16 +81,16 @@ class _ImageBase extends ImageBase<sharp.Sharp> {
     } = info;
     let format;
     switch (true) {
-      case channels === 1 && !hasAlpha:
+      case space === 'srgb' && channels === 1 && !hasAlpha:
         format = BitmapFormat.Gray8;
         break;
-      case channels === 3 && !hasAlpha:
+      case space === 'srgb' && channels === 3 && !hasAlpha:
         format = BitmapFormat.RGB24;
         break;
-      case channels === 4 && hasAlpha:
+      case space === 'srgb' && channels === 4 && hasAlpha:
         format = BitmapFormat.RGBA32;
         break;
-      case channels === 4 && !hasAlpha:
+      case space === 'cmyk' && channels === 4 && !hasAlpha:
         format = BitmapFormat.CMYK32;
         break;
       default: throw Error('Unknown format');
