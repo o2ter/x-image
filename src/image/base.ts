@@ -33,13 +33,6 @@ export enum BitmapFormat {
   CMYK32,
 };
 
-export const channelsMap = {
-  [BitmapFormat.Gray8]: 1,
-  [BitmapFormat.RGB24]: 3,
-  [BitmapFormat.RGBA32]: 4,
-  [BitmapFormat.CMYK32]: 4,
-} as const;
-
 export interface ImageData {
   buffer: ArrayBufferView;
   width: number;

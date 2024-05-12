@@ -27,9 +27,16 @@ import _ from 'lodash';
 import sharp from 'sharp';
 import { Duplex } from 'stream';
 import { binaryToBuffer } from '@o2ter/utils-js';
-import { ImageBase, channelsMap, ImageData, BitmapFormat } from '../../image/base';
+import { ImageBase, ImageData, BitmapFormat } from '../../image/base';
 
 const instanceOf = (x: any): x is sharp.Sharp => _.isFunction(x.toBuffer) && x instanceof Duplex;
+
+const channelsMap = {
+  [BitmapFormat.Gray8]: 1,
+  [BitmapFormat.RGB24]: 3,
+  [BitmapFormat.RGBA32]: 4,
+  [BitmapFormat.CMYK32]: 4,
+} as const;
 
 class _ImageBase extends ImageBase<sharp.Sharp> {
 
