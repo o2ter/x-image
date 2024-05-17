@@ -18,6 +18,7 @@
   "dependencies": {
     "jimp": "^0.22.12",
     "mirada": "^0.0.15",
+    "opencv4nodejs": "^5.6.0",
     "sharp": "^0.33.3"
   },
   "peerDependencies": {
@@ -43,5 +44,11 @@
     "ts-node": "^10.9.1",
     "tslib": "^2.6.2",
     "typescript": "^5.2.2"
+  },
+  "opencv4nodejs": {
+    "disableAutoBuild": 1,
+    "opencvIncludeDir": "/opt/homebrew/Cellar/opencv/4.9.0_8/include",
+    "opencvLibDir": "/opt/homebrew/Cellar/opencv/4.9.0_8/lib",
+    "opencvBinDir": "/opt/homebrew/Cellar/opencv/4.9.0_8/bin"
   }
 }
