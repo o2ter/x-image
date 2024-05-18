@@ -87,9 +87,7 @@ class _ImageBase extends ImageBase<cv.Mat> {
   }
 }
 
-const _loadOpenCV = () => ({
+export const loadOpenCV = () => ({
   instanceOf,
   ImageBase: _ImageBase,
 });
-
-export const loadOpenCV: () => ReturnType<typeof _loadOpenCV> | undefined = _loadOpenCV;
