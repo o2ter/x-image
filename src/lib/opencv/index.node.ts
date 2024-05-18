@@ -49,6 +49,10 @@ class _ImageBase extends ImageBase<cv.Mat> {
     return this._native.rows;
   }
 
+  colorspace() {
+    return undefined;
+  }
+
   raw(): ImageData {
     const { type, cols: width, rows: height } = this._native;
     let format;

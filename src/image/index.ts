@@ -50,6 +50,11 @@ export class Image {
     return base instanceof ImageBase ? base.height() : base.height;
   }
 
+  async colorspace() {
+    const base = await this._base;
+    return base instanceof ImageBase ? base.colorspace() : base.space;
+  }
+
   async raw() {
     const base = await this._base;
     return base instanceof ImageBase ? base.raw() : base;

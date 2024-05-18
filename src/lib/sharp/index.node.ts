@@ -70,6 +70,11 @@ class _ImageBase extends ImageBase<sharp.Sharp> {
     return height ?? 0;
   }
 
+  async colorspace() {
+    const { space, icc } = await this.metadata();
+    return icc ?? space;
+  }
+
   async raw(): Promise<ImageData> {
     const { space, hasAlpha, icc } = await this.metadata();
     const { data, info } = await this._native.raw({ depth: 'uchar' }).toBuffer({ resolveWithObject: true });

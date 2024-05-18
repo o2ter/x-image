@@ -52,6 +52,10 @@ class _ImageBase extends ImageBase<Jimp> {
     return this._native.bitmap.height;
   }
 
+  colorspace() {
+    return undefined;
+  }
+
   raw() {
     return {
       buffer: this._native.bitmap.data,
