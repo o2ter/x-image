@@ -25,36 +25,66 @@
 
 import _ from 'lodash';
 import cv from 'opencv4nodejs';
-import { ImageBase } from '../../image/base';
+import { BitmapFormat, ImageBase, ImageData } from '../../image/base';
+import { binaryToBuffer } from '@o2ter/utils-js';
 
 const instanceOf = (x: any): x is cv.Mat => x instanceof cv.Mat;
 
 class _ImageBase extends ImageBase<cv.Mat> {
 
   constructor(data: ImageData | cv.Mat) {
-    throw Error('Unimplement');
+    if (instanceOf(data)) {
+      super(data);
+    } else {
+      const image = new cv.Mat(binaryToBuffer(data.buffer), data.height, data.width)
+      super(image);
+    }
   }
 
   async metadata() {
     throw Error('Unimplement');
   }
 
-  async width() {
-    throw Error('Unimplement');
+  width() {
+    return this._native.cols;
   }
 
-  async height() {
-    throw Error('Unimplement');
+  height() {
+    return this._native.rows;
   }
 
-  async raw(): Promise<ImageData> {
-    throw Error('Unimplement');
+  raw(): ImageData {
+    const { type, cols: width, rows: height } = this._native;
+    let format;
+    switch (true) {
+      case type === cv.CV_8UC1:
+        format = BitmapFormat.Gray8;
+        break;
+      case type === cv.CV_8UC3:
+        format = BitmapFormat.RGB24;
+        break;
+      case type === cv.CV_8UC4:
+        format = BitmapFormat.RGBA32;
+        break;
+      default: throw Error('Unknown format');
+    }
+    return {
+      buffer: this._native.getData(),
+      width,
+      height,
+      format,
+      premultiplied: false,
+    };
   }
 
   clone() {
-    throw Error('Unimplement');
+    return new _ImageBase(this._native.copy());
   }
 
+  destory() {
+    super.destory();
+    this._native.release();
+  }
 }
 
 const _loadOpenCV = () => ({
