@@ -41,10 +41,6 @@ class _ImageBase extends ImageBase<cv.Mat> {
     }
   }
 
-  async metadata() {
-    throw Error('Unimplement');
-  }
-
   width() {
     return this._native.cols;
   }
