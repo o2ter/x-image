@@ -59,7 +59,11 @@ export abstract class ImageBase<Native> {
 
   abstract width(): Awaitable<number>;
   abstract height(): Awaitable<number>;
-  abstract colorspace(): Awaitable<string | Buffer | undefined>;
+  abstract format(): Awaitable<BitmapFormat>;
+  
+  colorspace(): Awaitable<string | Buffer | undefined> {
+    return undefined;
+  }
 
   abstract raw(): Awaitable<ImageData>;
 

@@ -38,6 +38,19 @@ const channelsMap = {
   [BitmapFormat.CMYK32]: 4,
 } as const;
 
+const _format = (
+  { space, hasAlpha }: sharp.Metadata,
+  { channels }: sharp.OutputInfo,
+) => {
+  switch (true) {
+    case space === 'srgb' && channels === 1 && !hasAlpha: return BitmapFormat.Gray8;
+    case space === 'srgb' && channels === 3 && !hasAlpha: return BitmapFormat.RGB24;
+    case space === 'srgb' && channels === 4 && hasAlpha: return BitmapFormat.RGBA32;
+    case space === 'cmyk' && channels === 4 && !hasAlpha: return BitmapFormat.CMYK32;
+    default: throw Error('Unknown format');
+  }
+}
+
 class _ImageBase extends ImageBase<sharp.Sharp> {
 
   constructor(data: ImageData | sharp.Sharp) {
@@ -70,43 +83,28 @@ class _ImageBase extends ImageBase<sharp.Sharp> {
     return height ?? 0;
   }
 
+  async format() {
+    const metadata = await this.metadata();
+    const { info } = await this._native.raw({ depth: 'uchar' }).toBuffer({ resolveWithObject: true });
+    return _format(metadata, info);
+  }
+
   async colorspace() {
     const { space, icc } = await this.metadata();
     return icc ?? space;
   }
 
   async raw(): Promise<ImageData> {
-    const { space, hasAlpha, icc } = await this.metadata();
+    const metadata = await this.metadata();
     const { data, info } = await this._native.raw({ depth: 'uchar' }).toBuffer({ resolveWithObject: true });
-    const {
-      width,
-      height,
-      channels,
-      premultiplied,
-    } = info;
-    let format;
-    switch (true) {
-      case space === 'srgb' && channels === 1 && !hasAlpha:
-        format = BitmapFormat.Gray8;
-        break;
-      case space === 'srgb' && channels === 3 && !hasAlpha:
-        format = BitmapFormat.RGB24;
-        break;
-      case space === 'srgb' && channels === 4 && hasAlpha:
-        format = BitmapFormat.RGBA32;
-        break;
-      case space === 'cmyk' && channels === 4 && !hasAlpha:
-        format = BitmapFormat.CMYK32;
-        break;
-      default: throw Error('Unknown format');
-    }
+    const format = _format(metadata, info);
     return {
       buffer: data,
-      width,
-      height,
+      width: info.width,
+      height: info.height,
       format,
-      premultiplied,
-      space: icc ?? space,
+      premultiplied: info.premultiplied,
+      space: metadata.icc ?? metadata.space,
     };
   }
 

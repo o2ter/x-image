@@ -49,30 +49,22 @@ class _ImageBase extends ImageBase<cv.Mat> {
     return this._native.rows;
   }
 
-  colorspace() {
-    return undefined;
+  format() {
+    const { type } = this._native;
+    switch (true) {
+      case type === cv.CV_8UC1: return BitmapFormat.Gray8;
+      case type === cv.CV_8UC3: return BitmapFormat.RGB24;
+      case type === cv.CV_8UC4: return BitmapFormat.RGBA32;
+      default: throw Error('Unknown format');
+    }
   }
 
   raw(): ImageData {
-    const { type, cols: width, rows: height } = this._native;
-    let format;
-    switch (true) {
-      case type === cv.CV_8UC1:
-        format = BitmapFormat.Gray8;
-        break;
-      case type === cv.CV_8UC3:
-        format = BitmapFormat.RGB24;
-        break;
-      case type === cv.CV_8UC4:
-        format = BitmapFormat.RGBA32;
-        break;
-      default: throw Error('Unknown format');
-    }
     return {
       buffer: this._native.getData(),
-      width,
-      height,
-      format,
+      width: this._native.cols,
+      height: this._native.rows,
+      format: this.format(),
       premultiplied: false,
     };
   }

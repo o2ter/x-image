@@ -25,7 +25,7 @@
 
 import Jimp from 'jimp';
 import { ImageBase, BitmapFormat, ImageData } from '../../image/base';
-import { binaryToBuffer } from '@o2ter/utils-js';
+import { Awaitable, binaryToBuffer } from '@o2ter/utils-js';
 
 const instanceOf = (x: any): x is Jimp => x instanceof Jimp;
 
@@ -52,16 +52,16 @@ class _ImageBase extends ImageBase<Jimp> {
     return this._native.bitmap.height;
   }
 
-  colorspace() {
-    return undefined;
+  format() {
+    return this._native.hasAlpha() ? BitmapFormat.RGBA32 : BitmapFormat.RGB24;
   }
 
   raw() {
     return {
       buffer: this._native.bitmap.data,
-      width: this._native.bitmap.width,
-      height: this._native.bitmap.height,
-      format: this._native.hasAlpha() ? BitmapFormat.RGBA32 : BitmapFormat.RGB24,
+      width: this.width(),
+      height: this.height(),
+      format: this.format(),
       premultiplied: false,
     };
   }
