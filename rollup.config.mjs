@@ -26,8 +26,13 @@ const rollupConfig = {
   ],
 };
 
+const moduleSuffixes = {
+  '.node': ['.node', ''],
+  '': [''],
+};
+
 export default [
-  ...['.node', ''].map(suffix => ({
+  ..._.map(moduleSuffixes, (exts, suffix) => ({
     ...rollupConfig,
     output: [
       {
@@ -44,13 +49,13 @@ export default [
     plugins: [
       resolve({
         extensions: [
-          ..._.uniq([suffix, '']).flatMap(x => [`${x}.ts`, `${x}.mjs`, `${x}.js`]),
+          ...exts.flatMap(x => [`${x}.ts`, `${x}.mjs`, `${x}.js`]),
         ]
       }),
       ...rollupPlugins
     ],
   })),
-  ...['.node', ''].map(suffix => ({
+  ..._.map(moduleSuffixes, (exts, suffix) => ({
     ...rollupConfig,
     output: [
       {
@@ -61,12 +66,12 @@ export default [
     plugins: [
       resolve({
         extensions: [
-          ..._.uniq([suffix, '']).flatMap(x => [`${x}.ts`, `${x}.mjs`, `${x}.js`]),
+          ...exts.flatMap(x => [`${x}.ts`, `${x}.mjs`, `${x}.js`]),
         ]
       }),
       dts({
         compilerOptions: {
-          moduleSuffixes: _.uniq([suffix, '']),
+          moduleSuffixes: exts,
         }
       }),
     ],
