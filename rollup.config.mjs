@@ -64,7 +64,11 @@ export default [
           ..._.uniq([suffix, '']).flatMap(x => [`${x}.ts`, `${x}.mjs`, `${x}.js`]),
         ]
       }),
-      dts()
+      dts({
+        compilerOptions: {
+          moduleSuffixes: _.uniq([suffix, '']),
+        }
+      }),
     ],
   })),
 ];
