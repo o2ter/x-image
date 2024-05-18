@@ -25,7 +25,7 @@
 
 import _ from 'lodash';
 import { loadJimp } from './lib/jimp';
-import { loadMirada } from './lib/mirada';
+import { loadOpenCV } from './lib/opencv';
 import { loadSharp } from './lib/sharp';
 import { Image } from './image';
 import { isImageData } from './image/base';
@@ -33,7 +33,7 @@ import { isImageData } from './image/base';
 const modules = [
   loadSharp,
   loadJimp,
-  loadMirada,
+  loadOpenCV,
 ] as const;
 
 type Modules = NonNullable<Awaited<ReturnType<typeof modules[number]>>>;

@@ -27,7 +27,7 @@ import _ from 'lodash';
 import { Awaitable, binaryToBuffer } from '@o2ter/utils-js';
 import { ImageBase, ImageData } from './base';
 import { loadJimp } from '../lib/jimp';
-import { loadMirada } from '../lib/mirada';
+import { loadOpenCV } from '../lib/opencv';
 import { loadSharp } from '../lib/sharp';
 
 type _Base = Awaitable<ImageBase<any> | ImageData>;
@@ -79,18 +79,18 @@ export class Image {
     return new Image(async () => new ImageBase(await this.raw()));
   }
 
-  toMirada() {
-    return new Image(async () => {
-      const { instanceOf, ImageBase } = await loadMirada();
-      if (instanceOf(this._base)) return this._base;
-      return new ImageBase(await this.raw());
-    });
-  }
-
   toSharp() {
     const { instanceOf, ImageBase } = loadSharp() ?? {};
     if (!instanceOf || !ImageBase) throw Error('Sharp is not supported');
     if (instanceOf(this._base)) return this;
     return new Image(async () => new ImageBase(await this.raw()));
+  }
+
+  toOpenCV() {
+    return new Image(async () => {
+      const { instanceOf, ImageBase } = await loadOpenCV();
+      if (instanceOf(this._base)) return this._base;
+      return new ImageBase(await this.raw());
+    });
   }
 }

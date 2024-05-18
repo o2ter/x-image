@@ -23,6 +23,81 @@
 //  THE SOFTWARE.
 //
 
-import type { loadOpenCV as _loadOpenCV } from './index.node';
+import cv from 'mirada';
+import { BitmapFormat, ImageBase, ImageData } from '../../image/base';
 
-export const loadOpenCV: typeof _loadOpenCV = () => undefined;
+const instanceOf = (x: any): x is cv.File => x instanceof cv.File;
+
+class _ImageBase extends ImageBase<cv.File> {
+
+  constructor(data: ImageData | cv.File) {
+    if (instanceOf(data)) {
+      super(data);
+    } else {
+      const image = cv.File.fromData({
+        data: data.buffer,
+        width: data.width,
+        height: data.height,
+      });
+      super(image);
+    }
+  }
+
+  width() {
+    return this._native.width;
+  }
+
+  height() {
+    return this._native.height;
+  }
+
+  raw() {
+    const { data, width, height } = this._native.asImageData();
+    const mat = this._native.asMat();
+    const type = mat.type();
+    let format;
+    switch (true) {
+      case type === cv.CV_8UC1:
+        format = BitmapFormat.Gray8;
+        break;
+      case type === cv.CV_8UC3:
+        format = BitmapFormat.RGB24;
+        break;
+      case type === cv.CV_8UC4:
+        format = BitmapFormat.RGBA32;
+        break;
+      default: throw Error('Unknown format');
+    }
+    return {
+      buffer: data,
+      width,
+      height,
+      format,
+      premultiplied: false,
+    };
+  }
+
+  clone() {
+    return new _ImageBase(this._native.clone());
+  }
+
+  destory() {
+    super.destory();
+    this._native.delete();
+  }
+}
+
+let loaded = false;
+const _loadOpenCV = async () => {
+  if (loaded) return;
+  loaded = true;
+  await cv.loadOpencv();
+}
+
+export const loadOpenCV = async () => {
+  await _loadOpenCV();
+  return {
+    instanceOf,
+    ImageBase: _ImageBase,
+  };
+}
