@@ -24,11 +24,11 @@
 //
 
 import _ from 'lodash';
-import { loadJimp } from './lib/jimp';
-import { loadOpenCV } from './lib/opencv';
-import { loadSharp } from './lib/sharp';
 import { Image } from './image';
 import { isImageData } from './image/base';
+import { loadJimp } from './lib/jimp';
+import { loadSharp } from './lib/sharp';
+import { loadOpenCV } from './lib/opencv';
 
 const modules = [
   loadSharp,
