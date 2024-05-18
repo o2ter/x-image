@@ -6,8 +6,11 @@ import babel from '@rollup/plugin-babel';
 import json from '@rollup/plugin-json';
 import dts from 'rollup-plugin-dts';
 
-const rollupPlugins = [
-  typescript({ declaration: false }),
+const rollupPlugins = (exts) => [
+  typescript({
+    declaration: false,
+    moduleSuffixes: exts,
+  }),
   babel({
     babelrc: false,
     exclude: 'node_modules/**',
@@ -52,7 +55,7 @@ export default [
           ...exts.flatMap(x => [`${x}.ts`, `${x}.mjs`, `${x}.js`]),
         ]
       }),
-      ...rollupPlugins
+      ...rollupPlugins(exts),
     ],
   })),
   ..._.map(moduleSuffixes, (exts, suffix) => ({
