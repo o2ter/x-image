@@ -44,7 +44,6 @@ export default [
     plugins: [
       resolve({
         extensions: [
-          ..._.uniq([suffix, '']).flatMap(x => [`${x}.tsx`, `${x}.jsx`]),
           ..._.uniq([suffix, '']).flatMap(x => [`${x}.ts`, `${x}.mjs`, `${x}.js`]),
         ]
       }),
@@ -62,7 +61,6 @@ export default [
     plugins: [
       resolve({
         extensions: [
-          ..._.uniq([suffix, '']).flatMap(x => [`${x}.tsx`, `${x}.jsx`]),
           ..._.uniq([suffix, '']).flatMap(x => [`${x}.ts`, `${x}.mjs`, `${x}.js`]),
         ]
       }),
