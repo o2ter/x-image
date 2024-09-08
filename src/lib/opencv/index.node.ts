@@ -73,8 +73,8 @@ class _ImageBase extends ImageBase<cv.Mat> {
     return new _ImageBase(this._native.copy());
   }
 
-  destory() {
-    super.destory();
+  destroy() {
+    super.destroy();
     this._native.release();
   }
 }

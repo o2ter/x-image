@@ -77,8 +77,8 @@ class _ImageBase extends ImageBase<cv.File> {
     return new _ImageBase(this._native.clone());
   }
 
-  destory() {
-    super.destory();
+  destroy() {
+    super.destroy();
     this._native.delete();
   }
 }

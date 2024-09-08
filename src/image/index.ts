@@ -72,9 +72,9 @@ export class Image {
     });
   }
 
-  async destory() {
+  async destroy() {
     const base = await this._base;
-    if (base instanceof ImageBase) base.destory();
+    if (base instanceof ImageBase) base.destroy();
   }
 
   private _anyImage() {

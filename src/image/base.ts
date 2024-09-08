@@ -69,7 +69,7 @@ export abstract class ImageBase<Native> {
 
   abstract clone(): ImageBase<Native>;
 
-  destory() {
+  destroy() {
     if (this._destroyed) throw Error('Cannot destroy a destroyed image');
     this._destroyed = true;
   }
